@@ -2,36 +2,54 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Círculo com JavaScript</title>
+    <title>Círculo Dinâmico com Controle Deslizante</title>
     <style>
         /* Estilizando o canvas para aparecer no centro da página */
         #meuCanvas {
             display: block;
             margin: auto;
             background-color: #f0f0f0;
+            width: 400px;
+            height: 400px;
+        }
+        /* Estilizando o controle deslizante */
+        .slider {
+            width: 100%;
+            margin: 20px 0;
         }
     </style>
 </head>
 <body>
 
-<canvas id="meuCanvas" width="200" height="200"></canvas>
+<canvas id="meuCanvas"></canvas>
+<!-- Controle deslizante para o raio do círculo -->
+<input type="range" id="raioSlider" class="slider" min="1" max="200" value="100" oninput="desenharCirculo()">
 
 <script>
     // Obtendo o contexto do canvas
     var canvas = document.getElementById('meuCanvas');
     var ctx = canvas.getContext('2d');
+    var slider = document.getElementById('raioSlider');
 
-    // Definindo as propriedades do círculo
-    var raio = 100; // Raio de 100 pixels para visualização clara
-    var x = canvas.width / 2;
-    var y = canvas.height / 2;
+    // Função para desenhar o círculo
+    function desenharCirculo() {
+        var raio = slider.value; // Valor atual do controle deslizante
+        var x = canvas.width / 2;
+        var y = canvas.height / 2;
 
-    // Desenhando o círculo
-    ctx.beginPath();
-    ctx.arc(x, y, raio, 0, 2 * Math.PI);
-    ctx.fillStyle = 'blue';
-    ctx.fill();
-    ctx.stroke();
+        // Limpando o canvas antes de desenhar
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Desenhando o círculo
+        ctx.beginPath();
+        ctx.arc(x, y, raio, 0, 2 * Math.PI);
+        ctx.fillStyle = 'blue';
+        ctx.fill();
+        ctx.stroke();
+    }
+
+    // Desenhar o círculo inicial
+    desenharCirculo();
 </script>
 
 </body>
