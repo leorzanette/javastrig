@@ -1,55 +1,107 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Círculo Dinâmico com Controle Deslizante</title>
-    <style>
-        /* Estilizando o canvas para aparecer no centro da página */
-        #meuCanvas {
-            display: block;
-            margin: auto;
-            background-color: #f0f0f0;
-            width: 400px;
-            height: 400px;
-        }
-        /* Estilizando o controle deslizante */
-        .slider {
-            width: 100%;
-            margin: 20px 0;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Circle with Grid (Radius 1)</title>
+<style>
+    canvas {
+        border: 1px solid black;
+    }
+</style>
 </head>
 <body>
 
-<canvas id="meuCanvas"></canvas>
-<!-- Controle deslizante para o raio do círculo -->
-<input type="range" id="raioSlider" class="slider" min="1" max="200" value="100" oninput="desenharCirculo()">
+<canvas id="canvas" width="400" height="400" ></canvas>
+<input type="range" min="0" max="360" value="0" id="angleSlider" oninput="updateAngle()">
 
 <script>
-    // Obtendo o contexto do canvas
-    var canvas = document.getElementById('meuCanvas');
-    var ctx = canvas.getContext('2d');
-    var slider = document.getElementById('raioSlider');
+function plotCircleWithLine(angle) {
+    // Canvas setup
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const gridSize = 4; // Number of rows and columns
+    const cellSize = Math.min(canvas.width, canvas.height) / gridSize;
+    const circleRadius = 1;
 
-    // Função para desenhar o círculo
-    function desenharCirculo() {
-        var raio = slider.value; // Valor atual do controle deslizante
-        var x = canvas.width / 2;
-        var y = canvas.height / 2;
+    // Clear canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // Limpando o canvas antes de desenhar
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Draw grid
+    drawGrid(ctx, canvas.width, canvas.height, gridSize, cellSize);
 
-        // Desenhando o círculo
+    // Draw circle
+    ctx.beginPath();
+    ctx.strokeStyle = "black"; // Circle color
+    ctx.arc(centerX, centerY, circleRadius * cellSize, 0, 2 * Math.PI);
+    ctx.stroke();
+
+    // Calculate end point of the line
+    const endX = centerX + circleRadius * cellSize * Math.cos(angle * Math.PI / 180);
+    const endY = centerY + circleRadius * cellSize * Math.sin(angle * Math.PI / 180);
+
+    // Draw line from center to the end point
+    ctx.beginPath();
+    ctx.strokeStyle = "black"; // Line color
+    ctx.moveTo(centerX, centerY);
+    ctx.lineTo(endX, endY);
+    ctx.stroke();
+
+    // Calculate sin line
+    const sinX = centerX + circleRadius * cellSize * Math.sin(angle * Math.PI / 180);
+    
+    // Draw line from center to the end point
+    ctx.beginPath();
+    ctx.strokeStyle = "blue"; // Line color
+    ctx.moveTo(centerX, centerY);
+    ctx.lineTo(centerX + circleRadius * 0, sinX);
+    ctx.stroke();
+	
+    // Calculate cos line
+    const cosX = centerX + circleRadius * cellSize * Math.cos(angle * Math.PI / 180);
+    
+    // Draw line from center to the end point
+    ctx.beginPath();
+    ctx.strokeStyle = "red"; // Line color
+    ctx.moveTo(centerX, centerY);
+    ctx.lineTo(cosX, centerX + circleRadius * 0);
+    ctx.stroke();
+}
+
+function drawGrid(ctx, width, height, gridSize, cellSize) {
+    ctx.strokeStyle = "#ddd"; // Grid color
+    ctx.lineWidth = 1;
+
+    // Draw horizontal grid lines
+    for (let i = 0; i < gridSize + 1; i++) {
+        const y = i * cellSize;
         ctx.beginPath();
-        ctx.arc(x, y, raio, 0, 2 * Math.PI);
-        ctx.fillStyle = 'blue';
-        ctx.fill();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
         ctx.stroke();
     }
 
-    // Desenhar o círculo inicial
-    desenharCirculo();
+    // Draw vertical grid lines
+    for (let i = 0; i < gridSize + 1; i++) {
+        const x = i * cellSize;
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+        ctx.stroke();
+    }
+}
+
+function updateAngle() {
+    const angleSlider = document.getElementById("angleSlider");
+    const angle = parseInt(angleSlider.value);
+    plotCircleWithLine(angle);
+    console.log(angle);
+}
+
+// Initial plot
+plotCircleWithLine(0); // Plot with initial angle of 0 degrees
 </script>
 
 </body>
