@@ -2,22 +2,37 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Inicial</title>
+    <title>Círculo com JavaScript</title>
     <style>
-        /* Estilos CSS para centralizar o conteúdo */
-        body, html {
-            height: 100%;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: Arial, sans-serif;
+        /* Estilizando o canvas para aparecer no centro da página */
+        #meuCanvas {
+            display: block;
+            margin: auto;
+            background-color: #f0f0f0;
         }
     </style>
 </head>
 <body>
-    <!-- Conteúdo centralizado -->
-    <h1>Hello</h1>
+
+<canvas id="meuCanvas" width="200" height="200"></canvas>
+
+<script>
+    // Obtendo o contexto do canvas
+    var canvas = document.getElementById('meuCanvas');
+    var ctx = canvas.getContext('2d');
+
+    // Definindo as propriedades do círculo
+    var raio = 100; // Raio de 100 pixels para visualização clara
+    var x = canvas.width / 2;
+    var y = canvas.height / 2;
+
+    // Desenhando o círculo
+    ctx.beginPath();
+    ctx.arc(x, y, raio, 0, 2 * Math.PI);
+    ctx.fillStyle = 'blue';
+    ctx.fill();
+    ctx.stroke();
+</script>
+
 </body>
 </html>
