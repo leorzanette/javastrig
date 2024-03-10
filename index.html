@@ -7,6 +7,7 @@
 <style>
     canvas {
         border: 1px solid black;
+        transform: scaleY(-1); /* Flip the canvas vertically */
     }
     .constants {
         position: absolute;
@@ -107,12 +108,12 @@ function plotCircleWithLine(angle) {
 
     // Display constants
     document.getElementById("constants").innerHTML = `
-        <div>Cos: ${cos.toFixed(4)}</div>
-        <div>Sin: ${sin.toFixed(4)}</div>
-        <div>Tan: ${tan.toFixed(4)}</div>
-        <div>Sec: ${sec.toFixed(4)}</div>
-        <div>Cotan: ${ctn.toFixed(4)}</div>
-        <div>Cosec: ${csc.toFixed(4)}</div>
+        <div style="color: yellow;">Cos: ${cos.toFixed(4)}</div>
+        <div style="color: green;">Sin: ${sin.toFixed(4)}</div>
+        <div style="color: red;">Tan: ${tan.toFixed(4)}</div>
+        <div style="color: purple;">Sec: ${sec.toFixed(4)}</div>
+        <div style="color: blue;">Cotan: ${ctn.toFixed(4)}</div>
+        <div style="color: orange;">Cosec: ${csc.toFixed(4)}</div>
     `;
 }
 
