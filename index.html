@@ -8,12 +8,19 @@
     canvas {
         border: 1px solid black;
     }
+    .constants {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+    }
 </style>
 </head>
 <body>
 
 <canvas id="canvas" width="400" height="400" ></canvas>
 <input type="range" min="0" max="360" value="0" id="angleSlider" oninput="updateAngle()">
+<div class="constants" id="constants"></div>
+<div id="angleValue"></div>
 
 <script>
 function plotCircleWithLine(angle) {
@@ -65,7 +72,7 @@ function plotCircleWithLine(angle) {
 
     // Draw cos line
     ctx.beginPath();
-    ctx.strokeStyle = "blue"; // Line color
+    ctx.strokeStyle = "yellow"; // Line color
     ctx.moveTo(endX, endY);
     ctx.lineTo(centerX, endY);
     ctx.stroke();
@@ -86,18 +93,27 @@ function plotCircleWithLine(angle) {
 
     // Draw tangent line
     ctx.beginPath();
-    ctx.strokeStyle = "orange"; // Line color
+    ctx.strokeStyle = "red"; // Line color
     ctx.moveTo(endX, endY);
     ctx.lineTo(centerX + circleRadius * cellSize * sec, centerY);
     ctx.stroke();
 
     // Draw cotan line
     ctx.beginPath();
-    ctx.strokeStyle = "orange"; // Line color
+    ctx.strokeStyle = "blue"; // Line color
     ctx.moveTo(endX, endY);
     ctx.lineTo(centerX, centerY + circleRadius * cellSize * csc);
     ctx.stroke();
 
+    // Display constants
+    document.getElementById("constants").innerHTML = `
+        <div>Cos: ${cos.toFixed(4)}</div>
+        <div>Sin: ${sin.toFixed(4)}</div>
+        <div>Tan: ${tan.toFixed(4)}</div>
+        <div>Sec: ${sec.toFixed(4)}</div>
+        <div>Cotan: ${ctn.toFixed(4)}</div>
+        <div>Cosec: ${csc.toFixed(4)}</div>
+    `;
 }
 
 function drawGrid(ctx, width, height, gridSize, cellSize) {
@@ -125,9 +141,9 @@ function drawGrid(ctx, width, height, gridSize, cellSize) {
 
 function updateAngle() {
     const angleSlider = document.getElementById("angleSlider");
-    const angle = 1 - parseInt(angleSlider.value);
+    const angle = parseInt(angleSlider.value);
     plotCircleWithLine(angle);
-    // console.log(angle);
+    document.getElementById("angleValue").innerText = `Angle: ${angle}`; // Display current angle value
 }
 
 // Initial plot
