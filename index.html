@@ -39,9 +39,16 @@ function plotCircleWithLine(angle) {
     ctx.stroke();
 
     // Calculate end point of the line
-    const endX = centerX + circleRadius * cellSize * Math.cos(angle * Math.PI / 180);
-    const endY = centerY + circleRadius * cellSize * Math.sin(angle * Math.PI / 180);
+    const cos = Math.cos(angle * Math.PI / 180);
+    const sin = Math.sin(angle * Math.PI / 180);
+    const tan = sin/cos;
+    const sec = 1/cos;
+    const ctn = 1/tan;
+    const csc = 1/sin;
 
+    const endX = centerX + circleRadius * cellSize * cos;
+    const endY = centerY + circleRadius * cellSize * sin;
+    
     // Draw line from center to the end point
     ctx.beginPath();
     ctx.strokeStyle = "black"; // Line color
@@ -49,25 +56,48 @@ function plotCircleWithLine(angle) {
     ctx.lineTo(endX, endY);
     ctx.stroke();
 
-    // Calculate sin line
-    const sinX = centerX + circleRadius * cellSize * Math.sin(angle * Math.PI / 180);
-    
-    // Draw line from center to the end point
+    // Draw sine line
+    ctx.beginPath();
+    ctx.strokeStyle = "green"; // Line color
+    ctx.moveTo(endX, endY);
+    ctx.lineTo(endX, centerY);
+    ctx.stroke();
+
+    // Draw cos line
     ctx.beginPath();
     ctx.strokeStyle = "blue"; // Line color
-    ctx.moveTo(centerX, centerY);
-    ctx.lineTo(centerX + circleRadius * 0, sinX);
+    ctx.moveTo(endX, endY);
+    ctx.lineTo(centerX, endY);
     ctx.stroke();
-	
-    // Calculate cos line
-    const cosX = centerX + circleRadius * cellSize * Math.cos(angle * Math.PI / 180);
     
-    // Draw line from center to the end point
+    // Draw sec line
     ctx.beginPath();
-    ctx.strokeStyle = "red"; // Line color
+    ctx.strokeStyle = "purple"; // Line color
     ctx.moveTo(centerX, centerY);
-    ctx.lineTo(cosX, centerX + circleRadius * 0);
+    ctx.lineTo(centerX + circleRadius * cellSize * sec, centerY);
     ctx.stroke();
+
+    // Draw cosec line
+    ctx.beginPath();
+    ctx.strokeStyle = "orange"; // Line color
+    ctx.moveTo(centerX, centerY);
+    ctx.lineTo(centerX, centerY + circleRadius * cellSize * csc);
+    ctx.stroke();
+
+    // Draw tangent line
+    ctx.beginPath();
+    ctx.strokeStyle = "orange"; // Line color
+    ctx.moveTo(endX, endY);
+    ctx.lineTo(centerX + circleRadius * cellSize * sec, centerY);
+    ctx.stroke();
+
+    // Draw cotan line
+    ctx.beginPath();
+    ctx.strokeStyle = "orange"; // Line color
+    ctx.moveTo(endX, endY);
+    ctx.lineTo(centerX, centerY + circleRadius * cellSize * csc);
+    ctx.stroke();
+
 }
 
 function drawGrid(ctx, width, height, gridSize, cellSize) {
@@ -95,9 +125,9 @@ function drawGrid(ctx, width, height, gridSize, cellSize) {
 
 function updateAngle() {
     const angleSlider = document.getElementById("angleSlider");
-    const angle = parseInt(angleSlider.value);
+    const angle = 1 - parseInt(angleSlider.value);
     plotCircleWithLine(angle);
-    console.log(angle);
+    // console.log(angle);
 }
 
 // Initial plot
